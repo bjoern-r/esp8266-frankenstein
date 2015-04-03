@@ -63,6 +63,7 @@ struct envpair defaultenv[] = {
 	{ "tftp-dir",          CONFIG_ENV_DEFAULT_TFTP_SERVER_DIR}, 
 	{ "tftp-file",         CONFIG_ENV_DEFAULT_TFTP_SERVER_FILE},
 #endif
+	{ "ws2812srv-autostart", "1"},
 };
 
 void request_default_environment(void)
@@ -82,7 +83,7 @@ void print_hello_banner(void)
 	system_print_meminfo();
 	system_set_os_print(0);
 	console_printf("\nAvailable services:\n");
-  int have_features = 0;
+	int have_features = 0;
 #if defined(CONFIG_SERVICE_DHCPS) && CONFIG_SERVICE_DHCPS
 	console_printf("DHCP server\n"); have_features ++;
 #endif
@@ -172,4 +173,10 @@ void user_init()
 	gpio_output_set(0, BIT2, BIT2, 0);
 	gpio_output_set(0, BIT0, BIT0, 0);
 
+	{
+	const char *enabled2 = env_get("ws2812srv-autostart"); 
+	if (enabled2 && (*enabled2=='1'))
+		ws2812srv_start(777);
+		;
+	}
 }
