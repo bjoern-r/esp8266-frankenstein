@@ -34,6 +34,17 @@ static  int do_chipinfo(int argc, const char* const* argv)
 	return 0;
 }
 
+uint32_t readvdd33(void);
+static  int do_vdd(int argc, const char* const* argv)
+{
+	os_intr_lock();
+	uint32_t vdd = readvdd33();
+	os_intr_unlock();
+	console_printf("VDD3V3 = %d mV\n", vdd);
+	return 0;
+}
+
+
 static  int do_reboot(int argc, const char* const* argv)
 {
 	system_restart();
@@ -70,6 +81,11 @@ static  int do_hname(int argc, const char* const* argv)
 CONSOLE_CMD(hname, -1, -1, 
 	    do_hname, NULL, NULL, 
 	    "Set dhcp hostname"
+);
+
+CONSOLE_CMD(vdd, -1, -1, 
+	    do_vdd, NULL, NULL, 
+	    "Get VDD voltage"
 );
 
 

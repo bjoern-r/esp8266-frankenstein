@@ -1,4 +1,4 @@
-objects-y+=main.o stdio.o helpers.o
+objects-y+=main.o stdio.o helpers.o flash_end_marker.o
 objects-y+=microrl.o
 objects-y+=console.o
 objects-y+=hostname.o
@@ -9,9 +9,11 @@ objects-$(CONFIG_SERVICE_TCP)+=cbuf.o
 objects-$(CONFIG_SERVICE_TCP)+=cbuftools.o
 objects-$(CONFIG_SERVICE_TCP)+=tcpservice.o
 objects-$(CONFIG_SERVICE_TELNET)+=svc_telnet.o
+objects-$(CONFIG_SERVICE_ECHO)+=svc_echo.o
 
 objects-y+=cmd_common.o cmd_env.o uart.o
 objects-y+=pin_map.o
+objects-y+=iwconnect.o
 
 objects-$(CONFIG_CMD_IW)+=cmd_iw.o
 objects-$(CONFIG_CMD_UART)+=cmd_uart.o
@@ -22,11 +24,12 @@ objects-$(CONFIG_CMD_FLASH)+=cmd_flash.o
 objects-$(CONFIG_CMD_LISTEN)+=cmd_listen.o
 objects-$(CONFIG_CMD_SEND)+=cmd_send.o
 objects-$(CONFIG_CMD_DS18B20)+=cmd_ds18b20.o
-objects-$(CONFIG_CMD_DHT11)+=cmd_dht11.o
 objects-$(CONFIG_CMD_DHT22)+=cmd_dht22.o
 objects-$(CONFIG_CMD_TFTP)+=cmd_tftp.o tftp.o
 objects-$(CONFIG_CMD_AT)+=cmd_at.o
 objects-$(CONFIG_CMD_ADC)+=cmd_adc.o
+objects-$(CONFIG_CMD_NSLOOKUP)+=cmd_nslookup.o
+#objects-$(CONFIG_CMD_PING)+=cmd_ping.o
 objects-$(CONFIG_ENABLE_PASSTHROUGH)+=cmd_passthrough.o
 
 objects-$(CONFIG_CMD_I2C)+=cmd_i2c.o i2c_master.o 

@@ -3,7 +3,7 @@
 #include "mem.h"
 #include "osapi.h"
 #include "user_interface.h"
-
+#include "flash_layout.h"
 #include "espconn.h"
 #include "gpio.h"
 #include "driver/uart.h" 
@@ -48,7 +48,7 @@ static  __attribute__ ((section(".iram0.text"))) void commit_handler(void* a)
 	uint32_t numsect = (u->numbytes >> (ffs(SPI_FLASH_SEC_SIZE) - 1));
 	numsect++;
 
-	console_printf("\nCommiting update, %ld sectors %ld bytes\n", numsect, u->numbytes);
+	console_printf("\nCommiting update, %d sectors %d bytes\n", numsect, u->numbytes);
 	
 	for (i=0; i < numsect; i++) { 
 		console_printf("#");
@@ -138,12 +138,13 @@ static int  do_tftp(int argc, const char* const* argv)
 		goto errfreets;
 	}
 
-	console_printf("TFTP: Downloading tftp://%s%s%s\n", host, path, file);
+
 	tftp_request(u->ts, host, path, file);
 	u->pos = 0;
-	u->fblock = 64;
+	u->fblock = fr_fs_flash_offset() / SPI_FLASH_SEC_SIZE;
 	u->numbytes = 0;
 	u->ready = 0;
+	console_printf("TFTP: Downloading tftp://%s%s%s, Starting flash block %d\n", host, path, file, u->fblock);
 	console_printf("\n ");
 	console_lock(1);
 	return 0;

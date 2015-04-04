@@ -5,6 +5,7 @@ BUGS and TODO:
 -- rewrite history for use more than 256 byte buffer
 */
 
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -28,10 +29,10 @@ static int echo = 1;
 void microrl_set_prompt(const char* prompt)
 {
 	if (strlen(prompt) + 4 > CONFIG_PROMPT_BUF) {
-		console_printf("error: prompt too long - inrease CONFIG_PROMPT_BUF\n");
+		console_printf("error: prompt too long\n"); //inrease CONFIG_PROMPT_BUF
 		return;
 	}	
-	ets_sprintf(current_prompt, "\n%s > ", prompt);
+	sprintf(current_prompt, "\n%s > ", prompt);
 	current_prompt_len = strlen(prompt) + 3;
 }
 
@@ -396,6 +397,7 @@ void microrl_set_sigint_callback (microrl_t * pThis, void (*sigintf)(void))
 #endif
 
 #ifdef _USE_ESC_SEQ
+#ifdef _USE_HISTORY
 static void hist_search (microrl_t * pThis, int dir)
 {
 	int len = hist_restore_line (&pThis->ring_hist, pThis->cmdline, dir);
@@ -405,6 +407,7 @@ static void hist_search (microrl_t * pThis, int dir)
 		terminal_print_line (pThis, 0, pThis->cursor);
 	}
 }
+#endif
 
 //*****************************************************************************
 // handling escape sequences

@@ -6,7 +6,7 @@ TMPDIR=tmp
 TOPDIR=.
 project_sources=src
 ANTARES_DIR:=./antares
-ANTARES_INSTALL_DIR:=$(abspath ./antares)
+ANTARES_INSTALL_DIR=$(ANTARES_DIR)
 
 CFLAGS+=-I$(abspath ./include/lwip-esp8266/)
 CFLAGS+=-D__ets__ \
@@ -16,7 +16,7 @@ CFLAGS+=-D__ets__ \
 	-DEBUF_LWIP
 
 
-ifeq ($(ANTARES_INSTALL_DIR2),)
+ifeq ($(ANTARES_INSTALL_DIR),)
 antares:
 	git clone $(GITURL) $(ANTARES_DIR) -b$(BRANCH)
 	@echo "I have fetched the antares sources for you to $(ANTARES_DIR)"
@@ -42,3 +42,8 @@ ditch_that_icache_flash_attr:
 defconfig:
 	@cp configs/config_default .config
 	@echo "Reverting to default config"
+
+update:
+	git fetch && git rebase -i
+	cd antares && git fetch && git rebase -i
+
